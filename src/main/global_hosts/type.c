@@ -54,9 +54,8 @@ static void AerospikeGlobalHosts_Type_Dealloc(PyObject * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeGlobalHosts_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-	 .ob_size			= 0,
 	.tp_name			= 0,
 	.tp_basicsize		= sizeof(AerospikeGlobalHosts),
 	.tp_itemsize		= 0,
@@ -64,7 +63,6 @@ static PyTypeObject AerospikeGlobalHosts_Type = {
 	.tp_print			= 0,
 	.tp_getattr			= 0,
 	.tp_setattr			= 0,
-	.tp_compare			= 0,
 	.tp_repr			= 0,
 	.tp_as_number		= 0,
 	.tp_as_sequence		= 0,

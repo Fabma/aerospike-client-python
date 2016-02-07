@@ -126,7 +126,7 @@ static int AerospikeLMap_Type_Init(AerospikeLMap * self, PyObject * args, PyObje
 
 static void AerospikeLMap_Type_Dealloc(PyObject * self)
 {
-	self->ob_type->tp_free((PyObject *) self);
+	Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 /*******************************************************************************
@@ -134,9 +134,8 @@ static void AerospikeLMap_Type_Dealloc(PyObject * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeLMap_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-		.ob_size			= 0,
 	.tp_name			= "aerospike.LMap",
 	.tp_basicsize		= sizeof(AerospikeLMap),
 	.tp_itemsize		= 0,
@@ -144,7 +143,6 @@ static PyTypeObject AerospikeLMap_Type = {
 	.tp_print			= 0,
 	.tp_getattr			= 0,
 	.tp_setattr			= 0,
-	.tp_compare			= 0,
 	.tp_repr			= 0,
 	.tp_as_number		= 0,
 	.tp_as_sequence		= 0,

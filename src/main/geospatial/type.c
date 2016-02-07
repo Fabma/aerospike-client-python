@@ -208,7 +208,7 @@ static void AerospikeGeospatial_Type_Dealloc(AerospikeGeospatial * self)
     if (self->geo_data) {
         Py_DECREF(self->geo_data);
     }
-    self->ob_type->tp_free((PyObject *) self);
+    Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 /*******************************************************************************
@@ -216,9 +216,8 @@ static void AerospikeGeospatial_Type_Dealloc(AerospikeGeospatial * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeGeospatial_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-    .ob_size			= 0,
     .tp_name			= "aerospike.Geospatial",
     .tp_basicsize		= sizeof(AerospikeGeospatial),
     .tp_itemsize		= 0,
@@ -226,7 +225,6 @@ static PyTypeObject AerospikeGeospatial_Type = {
     .tp_print			= 0,
     .tp_getattr			= 0,
     .tp_setattr			= 0,
-    .tp_compare			= 0,
     .tp_repr			= AerospikeGeospatial_Type_Repr,
     .tp_as_number		= 0,
     .tp_as_sequence		= 0,

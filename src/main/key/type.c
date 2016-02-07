@@ -78,7 +78,7 @@ static int AerospikeKey_Type_Init(AerospikeKey * self, PyObject * args, PyObject
 static void AerospikeKey_Type_Dealloc(AerospikeKey * self)
 {
 	// as_key_destroy(&self->key);
-    self->ob_type->tp_free((PyObject *) self);
+    Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 /*******************************************************************************
@@ -86,9 +86,8 @@ static void AerospikeKey_Type_Dealloc(AerospikeKey * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeKey_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-    .ob_size			= 0,
     .tp_name			= "aerospike.Key",
     .tp_basicsize		= sizeof(AerospikeKey),
     .tp_itemsize		= 0,
@@ -96,7 +95,6 @@ static PyTypeObject AerospikeKey_Type = {
     .tp_print			= 0,
     .tp_getattr			= 0,
     .tp_setattr			= 0,
-    .tp_compare			= 0,
     .tp_repr			= 0,
     .tp_as_number		= 0,
     .tp_as_sequence		= 0,

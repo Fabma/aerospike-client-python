@@ -146,7 +146,7 @@ static void AerospikeQuery_Type_Dealloc(AerospikeQuery * self)
     }
 
 	as_query_destroy(&self->query);
-    self->ob_type->tp_free((PyObject *) self);
+    Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 /*******************************************************************************
@@ -154,9 +154,8 @@ static void AerospikeQuery_Type_Dealloc(AerospikeQuery * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeQuery_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-    .ob_size			= 0,
     .tp_name			= "aerospike.Query",
     .tp_basicsize		= sizeof(AerospikeQuery),
     .tp_itemsize		= 0,
@@ -164,7 +163,6 @@ static PyTypeObject AerospikeQuery_Type = {
     .tp_print			= 0,
     .tp_getattr			= 0,
     .tp_setattr			= 0,
-    .tp_compare			= 0,
     .tp_repr			= 0,
     .tp_as_number		= 0,
     .tp_as_sequence		= 0,

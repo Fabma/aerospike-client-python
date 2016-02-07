@@ -129,7 +129,7 @@ static int AerospikeLSet_Type_Init(AerospikeLSet * self, PyObject * args, PyObje
 
 static void AerospikeLSet_Type_Dealloc(PyObject * self)
 {
-	self->ob_type->tp_free((PyObject *) self);
+	Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 /*******************************************************************************
@@ -137,9 +137,8 @@ static void AerospikeLSet_Type_Dealloc(PyObject * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeLSet_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-		.ob_size			= 0,
 	.tp_name			= "aerospike.LSet",
 	.tp_basicsize		= sizeof(AerospikeLSet),
 	.tp_itemsize		= 0,
@@ -147,7 +146,6 @@ static PyTypeObject AerospikeLSet_Type = {
 	.tp_print			= 0,
 	.tp_getattr			= 0,
 	.tp_setattr			= 0,
-	.tp_compare			= 0,
 	.tp_repr			= 0,
 	.tp_as_number		= 0,
 	.tp_as_sequence		= 0,

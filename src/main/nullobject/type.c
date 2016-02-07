@@ -33,9 +33,8 @@ static void AerospikeNullObject_Type_Dealloc(AerospikeNullObject * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeNullObject_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-	 .ob_size			= 0,
 	.tp_name			= "aerospike.null",
 	.tp_basicsize		= sizeof(AerospikeNullObject),
 	.tp_itemsize		= 0,
@@ -43,7 +42,6 @@ static PyTypeObject AerospikeNullObject_Type = {
 	.tp_print			= 0,
 	.tp_getattr			= 0,
 	.tp_setattr			= 0,
-	.tp_compare			= 0,
 	.tp_repr			= 0,
 	.tp_as_number		= 0,
 	.tp_as_sequence		= 0,

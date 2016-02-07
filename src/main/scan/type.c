@@ -107,7 +107,7 @@ static int AerospikeScan_Type_Init(AerospikeScan * self, PyObject * args, PyObje
 static void AerospikeScan_Type_Dealloc(PyObject * self)
 {
     as_scan_destroy(&((AerospikeScan *)self)->scan);
-    self->ob_type->tp_free((PyObject *) self);
+    Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 /*******************************************************************************
@@ -115,9 +115,8 @@ static void AerospikeScan_Type_Dealloc(PyObject * self)
  ******************************************************************************/
 
 static PyTypeObject AerospikeScan_Type = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 
-    .ob_size			= 0,
     .tp_name			= "aerospike.Scan",
     .tp_basicsize		= sizeof(AerospikeScan),
     .tp_itemsize		= 0,
@@ -125,7 +124,6 @@ static PyTypeObject AerospikeScan_Type = {
     .tp_print			= 0,
     .tp_getattr			= 0,
     .tp_setattr			= 0,
-    .tp_compare			= 0,
     .tp_repr			= 0,
     .tp_as_number		= 0,
     .tp_as_sequence		= 0,
