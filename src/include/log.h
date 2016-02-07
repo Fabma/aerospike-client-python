@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <Python.h>
+#include "py_version_decl.h"
 #include <aerospike/as_status.h>
 
 /*

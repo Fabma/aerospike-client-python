@@ -68,10 +68,10 @@ AerospikeQuery * AerospikeQuery_Apply(AerospikeQuery * self, PyObject * args, Py
 
 	if ( PyUnicode_Check(py_module) ){
 		py_umodule = PyUnicode_AsUTF8String(py_module);
-		module = PyString_AsString(py_umodule);
+		module = PyStr_AsString(py_umodule);
 	}
-	else if ( PyString_Check(py_module) ) {
-		module = PyString_AsString(py_module);
+	else if ( PyStr_Check(py_module) ) {
+		module = PyStr_AsString(py_module);
 	}
 	else {
 		as_error_update(&err, AEROSPIKE_ERR_CLIENT, "udf module argument must be a string or unicode string");
@@ -80,10 +80,10 @@ AerospikeQuery * AerospikeQuery_Apply(AerospikeQuery * self, PyObject * args, Py
 
 	if ( PyUnicode_Check(py_function) ){
 		py_ufunction = PyUnicode_AsUTF8String(py_function);
-		function = PyString_AsString(py_ufunction);
+		function = PyStr_AsString(py_ufunction);
 	}
-	else if ( PyString_Check(py_function) ) {
-		function = PyString_AsString(py_function);
+	else if ( PyStr_Check(py_function) ) {
+		function = PyStr_AsString(py_function);
 	}
 	else {
 		as_error_update(&err, AEROSPIKE_ERR_CLIENT, "udf function argument must be a string or unicode string");

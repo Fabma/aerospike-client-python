@@ -16,6 +16,6 @@
 
 #pragma once
 
-#include <Python.h>
+#include "py_version_decl.h"
 
 PyObject * AerospikePredicates_New(void);

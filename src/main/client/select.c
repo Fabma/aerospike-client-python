@@ -87,8 +87,8 @@ PyObject * AerospikeClient_Select_Invoke(
 		for ( int i = 0; i < size; i++ ) {
 			PyObject * py_val = PyList_GetItem(py_bins, i);
 			bins[i] = (char *) alloca(sizeof(char) * AS_BIN_NAME_MAX_SIZE);
-			if ( PyString_Check(py_val) ) {
-				strncpy(bins[i], PyString_AsString(py_val), AS_BIN_NAME_MAX_LEN);
+			if ( PyStr_Check(py_val) ) {
+				strncpy(bins[i], PyStr_AsString(py_val), AS_BIN_NAME_MAX_LEN);
 				bins[i][AS_BIN_NAME_MAX_LEN] = '\0';
 			}
 		}
@@ -102,10 +102,10 @@ PyObject * AerospikeClient_Select_Invoke(
 			bins[i] = (char *) alloca(sizeof(char) * AS_BIN_NAME_MAX_SIZE);
 			if (PyUnicode_Check(py_val)) {
 				py_ustr = PyUnicode_AsUTF8String(py_val);
-				strncpy(bins[i], PyString_AsString(py_ustr), AS_BIN_NAME_MAX_LEN);
+				strncpy(bins[i], PyStr_AsString(py_ustr), AS_BIN_NAME_MAX_LEN);
 				bins[i][AS_BIN_NAME_MAX_LEN] = '\0';
-			} else if ( PyString_Check(py_val) ) {
-				strncpy(bins[i], PyString_AsString(py_val), AS_BIN_NAME_MAX_LEN);
+			} else if ( PyStr_Check(py_val) ) {
+				strncpy(bins[i], PyStr_AsString(py_val), AS_BIN_NAME_MAX_LEN);
 				bins[i][AS_BIN_NAME_MAX_LEN] = '\0';
 			} else {
 				as_error_update(&err, AEROSPIKE_ERR_PARAM, "not string type");

@@ -90,9 +90,9 @@ PyObject * AerospikeClient_UDF_Put(AerospikeClient * self, PyObject *args, PyObj
 	char *filename = NULL;
 	if (PyUnicode_Check(py_filename)) {
 		py_ustr = PyUnicode_AsUTF8String(py_filename);
-		filename = PyString_AsString(py_ustr);
-	} else if (PyString_Check(py_filename)) {
-		filename = PyString_AsString(py_filename);
+		filename = PyStr_AsString(py_ustr);
+	} else if (PyStr_Check(py_filename)) {
+		filename = PyStr_AsString(py_filename);
 	} else {
 		as_error_update(&err, AEROSPIKE_ERR_PARAM, "Filename should be a string");
 		goto CLEANUP;
@@ -277,9 +277,9 @@ PyObject * AerospikeClient_UDF_Remove(AerospikeClient * self, PyObject *args, Py
 	char *filename = NULL;
 	if (PyUnicode_Check(py_filename)) {
 		py_ustr = PyUnicode_AsUTF8String(py_filename);
-		filename = PyString_AsString(py_ustr);
-	} else if (PyString_Check(py_filename)) {
-		filename = PyString_AsString(py_filename);
+		filename = PyStr_AsString(py_ustr);
+	} else if (PyStr_Check(py_filename)) {
+		filename = PyStr_AsString(py_filename);
 	} else {
 		as_error_update(&err, AEROSPIKE_ERR_PARAM, "Filename should be a string");
 		goto CLEANUP;
@@ -469,10 +469,10 @@ PyObject * AerospikeClient_UDF_Get_UDF(AerospikeClient * self, PyObject *args, P
 	char* strModule = NULL;
 	if ( PyUnicode_Check(py_module) ) {
 		py_ustr = PyUnicode_AsUTF8String(py_module);
-		strModule = PyString_AsString(py_ustr);
+		strModule = PyStr_AsString(py_ustr);
 	}
-	else if ( PyString_Check(py_module)){
-		strModule = PyString_AsString(py_module);
+	else if ( PyStr_Check(py_module)){
+		strModule = PyStr_AsString(py_module);
 	}
 	else
 	{

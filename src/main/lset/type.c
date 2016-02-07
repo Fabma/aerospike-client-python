@@ -213,7 +213,7 @@ AerospikeLSet * AerospikeLSet_New(AerospikeClient * client, PyObject * args, PyO
 		} 
 		if(PyObject_HasAttrString(exception_type, "bin")) {
 			if(&self->bin_name) {
-				PyObject *py_bins = PyString_FromString((char *)&self->bin_name);
+				PyObject *py_bins = PyStr_FromString((char *)&self->bin_name);
 				PyObject_SetAttrString(exception_type, "bin", py_bins);
 				Py_DECREF(py_bins);
 			} else {

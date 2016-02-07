@@ -139,8 +139,8 @@ void set_scan_options(as_error *err, as_scan* scan_p, PyObject * py_options)
 		Py_ssize_t pos = 0;
 		int64_t val = 0;
 		while (PyDict_Next(py_options, &pos, &key, &value)) {
-			char *key_name = PyString_AsString(key);
-			if (!PyString_Check(key)) {
+			char *key_name = PyStr_AsString(key);
+			if (!PyStr_Check(key)) {
 				as_error_update(err, AEROSPIKE_ERR_PARAM, "Policy key must be string");
 				break;
 			}

@@ -83,10 +83,10 @@ static bool AerospikeClient_Info_each(as_error * err, const as_node * node, cons
 		char * out = strchr(res,'\t');
 		if ( out != NULL ) {
 			out++;
-			py_out = PyString_FromString(out);
+			py_out = PyStr_FromString(out);
 		}
 		else {
-			py_out = PyString_FromString(res);
+			py_out = PyStr_FromString(res);
 		}
 	}
 
@@ -118,9 +118,9 @@ static bool AerospikeClient_Info_each(as_error * err, const as_node * node, cons
 						PyObject * py_port = PyTuple_GetItem(py_host,1);
 						if (PyUnicode_Check(py_addr)) {
 							py_ustr = PyUnicode_AsUTF8String(py_addr);
-							host_addr = PyString_AsString(py_ustr);
-						} else if ( PyString_Check(py_addr) ) {
-							host_addr = PyString_AsString(py_addr);
+							host_addr = PyStr_AsString(py_ustr);
+						} else if ( PyStr_Check(py_addr) ) {
+							host_addr = PyStr_AsString(py_addr);
 						} else {
 							as_error_update(&udata_ptr->error, AEROSPIKE_ERR_PARAM, "Host address is of type incorrect");
 							if (py_res) {
@@ -230,9 +230,9 @@ PyObject * AerospikeClient_Info(AerospikeClient * self, PyObject * args, PyObjec
 	char * req = NULL;
 	if ( PyUnicode_Check(py_req)) {
 		py_ustr = PyUnicode_AsUTF8String(py_req);
-		req = PyString_AsString(py_ustr);
-	} else if( PyString_Check(py_req) ) {
-		req = PyString_AsString(py_req);
+		req = PyStr_AsString(py_ustr);
+	} else if( PyStr_Check(py_req) ) {
+		req = PyStr_AsString(py_req);
 	} else {
 		as_error_update(&err, AEROSPIKE_ERR_PARAM, "Request must be a string");
 		goto CLEANUP;

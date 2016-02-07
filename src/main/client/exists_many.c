@@ -62,11 +62,11 @@ bool batch_exists_cb(const as_batch_read* results, uint32_t n, void* udata)
         p_key = PyTuple_New(4);
 
 	    if ( results[i].key->ns && strlen(results[i].key->ns) > 0 ) {
-		    PyTuple_SetItem(p_key, 0, PyString_FromString(results[i].key->ns));
+		    PyTuple_SetItem(p_key, 0, PyStr_FromString(results[i].key->ns));
 	    }
 
 	    if ( results[i].key->set && strlen(results[i].key->set) > 0 ) {
-		    PyTuple_SetItem(p_key, 1, PyString_FromString(results[i].key->set));
+		    PyTuple_SetItem(p_key, 1, PyStr_FromString(results[i].key->set));
 	    }
 
         if ( results[i].key->valuep ) {
@@ -76,7 +76,7 @@ bool batch_exists_cb(const as_batch_read* results, uint32_t n, void* udata)
                     break;
 
                 case AS_STRING:
-                    PyTuple_SetItem(p_key, 2, PyString_FromString((const char *)results[i].key->value.string.value));
+                    PyTuple_SetItem(p_key, 2, PyStr_FromString((const char *)results[i].key->value.string.value));
                     break;
                 default:
                     break;
@@ -144,11 +144,11 @@ void batch_exists_recs(as_error *err, as_batch_read_records* records, PyObject *
         p_key = PyTuple_New(4);
 
 	    if ( batch->key.ns && strlen(batch->key.ns) > 0 ) {
-		    PyTuple_SetItem(p_key, 0, PyString_FromString(batch->key.ns));
+		    PyTuple_SetItem(p_key, 0, PyStr_FromString(batch->key.ns));
 	    }
 
 	    if ( batch->key.set && strlen(batch->key.set) > 0 ) {
-		    PyTuple_SetItem(p_key, 1, PyString_FromString(batch->key.set));
+		    PyTuple_SetItem(p_key, 1, PyStr_FromString(batch->key.set));
 	    }
 
 		if ( batch->key.valuep ) {
@@ -158,7 +158,7 @@ void batch_exists_recs(as_error *err, as_batch_read_records* records, PyObject *
 					break;
 
 				case AS_STRING:
-					PyTuple_SetItem(p_key, 2, PyString_FromString((const char *)batch->key.value.string.value));
+					PyTuple_SetItem(p_key, 2, PyStr_FromString((const char *)batch->key.value.string.value));
 					break;
 				default:
 					break;

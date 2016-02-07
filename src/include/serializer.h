@@ -16,7 +16,7 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#include <Python.h>
+#include "py_version_decl.h"
 #include <stdbool.h>
 #include "aerospike/as_error.h"
 #include "types.h"

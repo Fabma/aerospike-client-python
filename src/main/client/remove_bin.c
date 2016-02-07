@@ -82,10 +82,10 @@ PyObject * AerospikeClient_RemoveBin_Invoke(
 		PyObject * py_val = PyList_GetItem(py_binList, count);
 		if( PyUnicode_Check(py_val) ){
 			py_ustr = PyUnicode_AsUTF8String(py_val);
-			binName = PyString_AsString(py_ustr);
+			binName = PyStr_AsString(py_ustr);
 		}
-		else if( PyString_Check(py_val) ) {
-			binName = PyString_AsString(py_val);
+		else if( PyStr_Check(py_val) ) {
+			binName = PyStr_AsString(py_val);
 		}
 		else
 		{

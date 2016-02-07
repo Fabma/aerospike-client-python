@@ -55,9 +55,9 @@ AerospikeScan * AerospikeScan_Select(AerospikeScan * self, PyObject * args, PyOb
 			TRACE();
 			if (PyUnicode_Check(py_bin)) {
 				py_ustr = PyUnicode_AsUTF8String(py_bin);
-				bin = PyString_AsString(py_ustr);
-			} else if (PyString_Check(py_bin)) {
-				bin = PyString_AsString(py_bin);
+				bin = PyStr_AsString(py_ustr);
+			} else if (PyStr_Check(py_bin)) {
+				bin = PyStr_AsString(py_bin);
             } else if (PyByteArray_Check(py_bin)) {
                 bin = PyByteArray_AsString(py_bin);
 			} else {

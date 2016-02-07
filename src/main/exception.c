@@ -26,9 +26,16 @@
 #include "exception_types.h"
 static PyObject *module;
 
-PyObject * AerospikeException_New(void)
-{
-	module = Py_InitModule3("aerospike.exception", NULL, "Exception objects");
+
+PyObject * AerospikeException_New(void) {
+	static struct PyModuleDef moduledef = { 
+		    PyModuleDef_HEAD_INIT, /* m_base */
+			"aerospike.exception", /* m_name */
+			"Exception objects", /* m_doc */
+			-1, /* m_size */
+			NULL, /* m_methods */
+	};
+	module = PyModule_Create(&moduledef);
 
 	struct exceptions exceptions_array;
 
@@ -358,10 +365,10 @@ PyObject* raise_exception(as_error *err) {
 			}
 			if(err->code == PyInt_AsLong(py_code)) {
 				PyObject *py_attr = NULL;
-				py_attr = PyString_FromString(err->message);
+				py_attr = PyStr_FromString(err->message);
 				PyObject_SetAttrString(py_value, "msg", py_attr);
 				Py_DECREF(py_attr);
-				py_attr = PyString_FromString(err->file);
+				py_attr = PyStr_FromString(err->file);
 				PyObject_SetAttrString(py_value, "file", py_attr);
 				Py_DECREF(py_attr);
 				py_attr = PyInt_FromLong(err->line);

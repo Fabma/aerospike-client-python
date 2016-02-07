@@ -87,7 +87,7 @@ int check_type(AerospikeClient * self, PyObject * py_value, int op, as_error *er
 				strcmp(py_value->ob_type->tp_name, "aerospike.null")) && op == AS_OPERATOR_INCR){
 	    as_error_update(err, AEROSPIKE_ERR_PARAM, "Unsupported operand type(s) for +: only 'int' allowed");
 		return 1;
-	} else if ((!PyString_Check(py_value) && !PyUnicode_Check(py_value) && !PyByteArray_Check(py_value) && strcmp(py_value->ob_type->tp_name, "aerospike.null")) && (op == AS_OPERATOR_APPEND || op == AS_OPERATOR_PREPEND)) {
+	} else if ((!PyStr_Check(py_value) && !PyUnicode_Check(py_value) && !PyByteArray_Check(py_value) && strcmp(py_value->ob_type->tp_name, "aerospike.null")) && (op == AS_OPERATOR_APPEND || op == AS_OPERATOR_PREPEND)) {
 	    as_error_update(err, AEROSPIKE_ERR_PARAM, "Cannot concatenate 'str' and 'non-str' objects");
 		return 1;
 	}
@@ -162,13 +162,13 @@ static void initialize_bin_for_strictypes(AerospikeClient *self, as_error *err, 
 		long val = PyLong_AsLong(py_value);
 		as_integer_init((as_integer *) &binop_bin->value, val);
 		binop_bin->valuep = &binop_bin->value;
-	} else if (PyString_Check(py_value)) {
-		char * val = PyString_AsString(py_value);
+	} else if (PyStr_Check(py_value)) {
+		char * val = PyStr_AsString(py_value);
 		as_string_init((as_string *) &binop_bin->value, val, false);
 		binop_bin->valuep = &binop_bin->value;	
 	} else if (PyUnicode_Check(py_value)) {
 		PyObject *py_ustr1 = PyUnicode_AsUTF8String(py_value);
-		char * val = PyString_AsString(py_ustr1);
+		char * val = PyStr_AsString(py_ustr1);
 		as_string_init((as_string *) &binop_bin->value, val, false);
 		binop_bin->valuep = &binop_bin->value;	
 	} else if (PyFloat_Check(py_value)) {
@@ -194,8 +194,8 @@ static void initialize_bin_for_strictypes(AerospikeClient *self, as_error *err, 
 		((as_val *) &binop_bin->value)->type = AS_UNKNOWN;
 		binop_bin->valuep = (as_bin_value *) map;
 	} else if (!strcmp(py_value->ob_type->tp_name, "aerospike.Geospatial")) {
-		PyObject* py_data = PyObject_GenericGetAttr(py_value, PyString_FromString("geo_data"));
-		char *geo_value = PyString_AsString(AerospikeGeospatial_DoDumps(py_data, err));
+		PyObject* py_data = PyObject_GenericGetAttr(py_value, PyStr_FromString("geo_data"));
+		char *geo_value = PyStr_AsString(AerospikeGeospatial_DoDumps(py_data, err));
 		if (aerospike_has_geo(self->as)) {
 			as_geojson_init((as_geojson *) &binop_bin->value, geo_value, false);
 			binop_bin->valuep = &binop_bin->value;
@@ -287,11 +287,11 @@ PyObject *  AerospikeClient_Operate_Invoke(
 			PyObject * py_value = NULL;
 			Py_ssize_t pos = 0;
 			while (PyDict_Next(py_val, &pos, &key_op, &value)) {
-				if ( ! PyString_Check(key_op) ) {
+				if ( ! PyStr_Check(key_op) ) {
 					as_error_update(err, AEROSPIKE_ERR_CLIENT, "A operation key must be a string.");
 					goto CLEANUP;
 				} else {
-					char * name = PyString_AsString(key_op);
+					char * name = PyStr_AsString(key_op);
 					if(!strcmp(name,"op") && (PyInt_Check(value) || PyLong_Check(value))) {
 						operation = PyInt_AsLong(value);
 					} else if (!strcmp(name, "bin")) {
@@ -308,9 +308,9 @@ PyObject *  AerospikeClient_Operate_Invoke(
 			if (py_bin) {
 				if (PyUnicode_Check(py_bin)) {
 					py_ustr = PyUnicode_AsUTF8String(py_bin);
-					bin = PyString_AsString(py_ustr);
-				} else if (PyString_Check(py_bin)) {
-					bin = PyString_AsString(py_bin);
+					bin = PyStr_AsString(py_ustr);
+				} else if (PyStr_Check(py_bin)) {
+					bin = PyStr_AsString(py_bin);
 				} else if (PyByteArray_Check(py_bin)) {
                     bin = PyByteArray_AsString(py_bin);
                 } else {
@@ -347,10 +347,10 @@ PyObject *  AerospikeClient_Operate_Invoke(
 				case AS_OPERATOR_APPEND:
 					if (PyUnicode_Check(py_value)) {
 						py_ustr1 = PyUnicode_AsUTF8String(py_value);
-						val = PyString_AsString(py_ustr1);
+						val = PyStr_AsString(py_ustr1);
 						as_operations_add_append_str(&ops, bin, val);
-					} else if (PyString_Check(py_value)) {
-						val = PyString_AsString(py_value);
+					} else if (PyStr_Check(py_value)) {
+						val = PyStr_AsString(py_value);
 						as_operations_add_append_str(&ops, bin, val);
 					} else if (PyByteArray_Check(py_value)) {
 						as_bytes *bytes;
@@ -369,10 +369,10 @@ PyObject *  AerospikeClient_Operate_Invoke(
 				case AS_OPERATOR_PREPEND:
 					if (PyUnicode_Check(py_value)) {
 						py_ustr1 = PyUnicode_AsUTF8String(py_value);
-						val = PyString_AsString(py_ustr1);
+						val = PyStr_AsString(py_ustr1);
 						as_operations_add_prepend_str(&ops, bin, val);
-					} else if (PyString_Check(py_value)) {
-						val = PyString_AsString(py_value);
+					} else if (PyStr_Check(py_value)) {
+						val = PyStr_AsString(py_value);
 						as_operations_add_prepend_str(&ops, bin, val);
 					} else if (PyByteArray_Check(py_value)) {
 						as_bytes *bytes;
@@ -1020,9 +1020,9 @@ PyObject * bin_strict_type_checking(AerospikeClient * self, as_error *err, PyObj
 	if (py_bin) {
 		if (PyUnicode_Check(py_bin)) {
 			py_ustr = PyUnicode_AsUTF8String(py_bin);
-			*bin = PyString_AsString(py_ustr);
-		} else if (PyString_Check(py_bin)) {
-			*bin = PyString_AsString(py_bin);
+			*bin = PyStr_AsString(py_ustr);
+		} else if (PyStr_Check(py_bin)) {
+			*bin = PyStr_AsString(py_bin);
 		} else if (PyByteArray_Check(py_bin)) {
 			*bin = PyByteArray_AsString(py_bin);
 		} else {

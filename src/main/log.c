@@ -134,10 +134,10 @@ static bool log_cb(as_log_level level, const char * func,
 
 	// Initialise argument variables
 	PyObject *log_level = PyInt_FromLong((long)level);
-	PyObject *func_name = PyString_FromString(func);
-	PyObject *file_name = PyString_FromString(file);
+	PyObject *func_name = PyStr_FromString(func);
+	PyObject *file_name = PyStr_FromString(file);
 	PyObject *line_no   = PyInt_FromLong((long)line);
-	PyObject *message   = PyString_FromString(msg);
+	PyObject *message   = PyStr_FromString(msg);
 
 	// Set argument list
 	PyTuple_SetItem(py_arglist, 0, log_level);

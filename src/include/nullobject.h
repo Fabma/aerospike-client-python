@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <Python.h>
+#include "py_version_decl.h"
 #include <stdbool.h>
 #include "types.h"
 PyObject * AerospikeNullObject_New();

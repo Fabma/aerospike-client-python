@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-#include <Python.h>
+#include "py_version_decl.h"
 #include <aerospike/as_error.h>
 #include <aerospike/as_policy.h>
 

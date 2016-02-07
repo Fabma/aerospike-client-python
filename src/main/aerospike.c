@@ -77,17 +77,27 @@ AerospikeConstants operator_constants[] = {
 };
 
 #define OPERATOR_CONSTANTS_ARR_SIZE (sizeof(operator_constants)/sizeof(AerospikeConstants))
-PyMODINIT_FUNC initaerospike(void)
-{
 
+MODULE_INIT_FUNC(aerospike)
+{
 	static char version[6] = "1.0.60";
 	// Makes things "thread-safe"
 	PyEval_InitThreads();
 	int i = 0;
+    
+	static struct PyModuleDef moduledef = { 
+			PyModuleDef_HEAD_INIT, /* m_base */
+			"aerospike", /* m_name */
+			"Aerospike Python Client", /* m_doc */
+			-1, /* m_size */
+			Aerospike_Methods, /* m_methods */
+	};
+	PyObject * aerospike = PyModule_Create(&moduledef);
 
-	// aerospike Module
-	PyObject * aerospike = Py_InitModule3("aerospike", Aerospike_Methods,
-			"Aerospike Python Client");
+	if(aerospike == NULL)
+    {
+        return NULL;
+    }
 
 	py_global_hosts = PyDict_New();
 	declare_policy_constants(aerospike);
@@ -156,4 +166,6 @@ PyMODINIT_FUNC initaerospike(void)
 	PyObject * null_object = AerospikeNullObject_New();
 	Py_INCREF(null_object);
 	PyModule_AddObject(aerospike, "null", (PyObject *) null_object);
+
+    return aerospike;
 }

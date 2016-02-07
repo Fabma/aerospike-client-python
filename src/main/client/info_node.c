@@ -95,11 +95,11 @@ static PyObject * AerospikeClient_InfoNode_Invoke(
 			PyObject * py_addr = PyTuple_GetItem(py_host,0);
 			PyObject * py_port = PyTuple_GetItem(py_host,1);
 
-			if ( PyString_Check(py_addr) ) {
-				address = PyString_AsString(py_addr);
+			if ( PyStr_Check(py_addr) ) {
+				address = PyStr_AsString(py_addr);
 			} else if (PyUnicode_Check(py_addr)) {
 				py_ustr = PyUnicode_AsUTF8String(py_addr);
-				address = PyString_AsString(py_ustr);
+				address = PyStr_AsString(py_ustr);
 			}
 			if ( PyInt_Check(py_port) ) {
 				port_no = (uint16_t) PyInt_AsLong(py_port);
@@ -116,9 +116,9 @@ static PyObject * AerospikeClient_InfoNode_Invoke(
 	char * request_str_p = NULL;
 	if (PyUnicode_Check(py_request_str)) {
 		py_ustr1 = PyUnicode_AsUTF8String(py_request_str);
-		request_str_p = PyString_AsString(py_ustr1);
-	} else if (PyString_Check(py_request_str)) {
-		request_str_p = PyString_AsString(py_request_str);
+		request_str_p = PyStr_AsString(py_ustr1);
+	} else if (PyStr_Check(py_request_str)) {
+		request_str_p = PyStr_AsString(py_request_str);
 	} else {
 		as_error_update(&err, AEROSPIKE_ERR_PARAM, "Request should be of string type");
 		goto CLEANUP;
@@ -131,7 +131,7 @@ static PyObject * AerospikeClient_InfoNode_Invoke(
     Py_END_ALLOW_THREADS
 	if( err.code == AEROSPIKE_OK ) {
 		if (response_p && status == AEROSPIKE_OK){
-			py_response = PyString_FromString(response_p);
+			py_response = PyStr_FromString(response_p);
 			free(response_p);
 		} else if ( response_p == NULL){
 			as_error_update(&err, AEROSPIKE_ERR_CLIENT, "Invalid info operation");
@@ -215,7 +215,7 @@ static PyObject * AerospikeClient_GetNodes_Returnlist(as_error* err,
 	PyObject * value_tok = NULL;
 	bool break_flag = false;
 
-	tok = strtok_r(PyString_AsString(command), INFO_REQUEST_RESPONSE_DELIMITER, &saved);
+	tok = strtok_r(PyStr_AsString(command), INFO_REQUEST_RESPONSE_DELIMITER, &saved);
 	if (tok == NULL) {
 		as_error_update(err, AEROSPIKE_ERR_CLIENT, "Unable to get addr in service");
 		goto CLEANUP;
@@ -232,11 +232,11 @@ static PyObject * AerospikeClient_GetNodes_Returnlist(as_error* err,
 
 		nodes_tuple[host_index] = PyTuple_New(2);
 
-		value_tok = PyString_FromString(tok);
+		value_tok = PyStr_FromString(tok);
 		PyTuple_SetItem(nodes_tuple[host_index], 0 , value_tok);
 		//Py_DECREF(value_tok);
 
-		if(strcmp(PyString_AsString(command),"response_services_p")) {
+		if(strcmp(PyStr_AsString(command),"response_services_p")) {
 			tok = strtok_r(NULL, HOST_DELIMITER, &saved);
 			if (tok == NULL) {
 				as_error_update(err, AEROSPIKE_ERR_CLIENT, "Unable to get port");
@@ -309,7 +309,7 @@ static PyObject * AerospikeClient_GetNodes_Invoke(
 	}
 
 	PyObject * py_req_str = NULL;
-	py_req_str = PyString_FromString("services");
+	py_req_str = PyStr_FromString("services");
 	response_services_p = AerospikeClient_InfoNode_Invoke(self, py_req_str, NULL, NULL);
 	Py_DECREF(py_req_str);
 	if(!response_services_p) {
@@ -317,7 +317,7 @@ static PyObject * AerospikeClient_GetNodes_Invoke(
 		goto CLEANUP;
 	}
 
-	py_req_str = PyString_FromString("service");
+	py_req_str = PyStr_FromString("service");
 	response_service_p = AerospikeClient_InfoNode_Invoke(self, py_req_str, NULL, NULL);
 	Py_DECREF(py_req_str);
 	if(!response_service_p) {

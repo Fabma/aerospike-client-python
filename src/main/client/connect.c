@@ -52,9 +52,9 @@ PyObject * AerospikeClient_Connect(AerospikeClient * self, PyObject * args, PyOb
         return NULL;
     }
 
-    if ( py_username && PyString_Check(py_username) && py_password && PyString_Check(py_password) ) {
-        char * username = PyString_AsString(py_username);
-        char * password = PyString_AsString(py_password);
+    if ( py_username && PyStr_Check(py_username) && py_password && PyStr_Check(py_password) ) {
+        char * username = PyStr_AsString(py_username);
+        char * password = PyStr_AsString(py_password);
         as_config_set_user(&self->as->config, username, password);
     }
 

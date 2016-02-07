@@ -236,7 +236,7 @@ void execute_user_callback(user_serializer_callback *user_callback_info,
 	} else {
 		as_bytes * bytes_pointer = *bytes;
 		char*       bytes_val_p = (char*)bytes_pointer->value;
-		py_value = PyString_FromStringAndSize(bytes_val_p, as_bytes_size(*bytes));
+		py_value = PyStr_FromStringAndSize(bytes_val_p, as_bytes_size(*bytes));
 		if (PyTuple_SetItem(py_arglist, 0 , py_value) != 0){
 			Py_DECREF(py_arglist);
 			goto CLEANUP;
@@ -251,8 +251,8 @@ void execute_user_callback(user_serializer_callback *user_callback_info,
 	if (py_return) {
 
 		if (serialize_flag) {
-			char * py_val = PyString_AsString(py_return);
-			len = PyString_Size(py_return);
+			char * py_val = PyStr_AsString(py_return);
+			len = PyBytes_Size(py_return);
 			set_as_bytes(bytes, (uint8_t *) py_val,
 					len, AS_BYTES_BLOB, error_p);
 			Py_DECREF(py_return);
@@ -350,7 +350,7 @@ extern PyObject * serialize_based_on_serializer_policy(AerospikeClient * self,
 						as_error_update(error_p, AEROSPIKE_ERR_CLIENT, "Unable to load cpickle module");
 						goto CLEANUP;
 					} else {
-						PyObject * py_funcname = PyString_FromString("dumps");
+						PyObject * py_funcname = PyStr_FromString("dumps");
 
 						Py_INCREF(cpickle_module);
 						initresult = PyObject_CallMethodObjArgs(cpickle_module,
@@ -364,8 +364,8 @@ extern PyObject * serialize_based_on_serializer_policy(AerospikeClient * self,
 							goto CLEANUP;
 						} else {
 							Py_INCREF(initresult);
-							char *return_value = PyString_AsString(initresult);
-							Py_ssize_t len = PyString_GET_SIZE(initresult);
+							char *return_value = PyStr_AsString(initresult);
+							Py_ssize_t len = PyBytes_GET_SIZE(initresult);
                             set_as_bytes(bytes, (uint8_t *) return_value,
 									len, AS_BYTES_PYTHON, error_p);
 							Py_DECREF(initresult);
@@ -465,8 +465,8 @@ extern PyObject * deserialize_based_on_as_bytes_type(AerospikeClient * self,
 									  goto CLEANUP;
 								  } else {
 									  char*       bytes_val_p = (char*)bytes->value;
-									  PyObject *py_value = PyString_FromStringAndSize(bytes_val_p, as_bytes_size(bytes));
-									  PyObject *py_funcname = PyString_FromString("loads");
+									  PyObject *py_value = PyStr_FromStringAndSize(bytes_val_p, as_bytes_size(bytes));
+									  PyObject *py_funcname = PyStr_FromString("loads");
 
 									  Py_INCREF(cpickle_module);
 									  initresult = PyObject_CallMethodObjArgs(cpickle_module, py_funcname, py_value, NULL);

@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <Python.h>
+#include "py_version_decl.h"
 
 PyObject * AerospikeException_New(void);
 PyObject* raise_exception(as_error * err);

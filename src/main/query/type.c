@@ -91,19 +91,19 @@ static int AerospikeQuery_Type_Init(AerospikeQuery * self, PyObject * args, PyOb
 	char * namespace = NULL;
 	char * set = NULL;
 
-	if ( PyString_Check(py_namespace) ) {
-		namespace = PyString_AsString(py_namespace);
+	if ( PyStr_Check(py_namespace) ) {
+		namespace = PyStr_AsString(py_namespace);
 	} else {
 		as_error_update(&err, AEROSPIKE_ERR_PARAM, "Namespace should be a string");
 		goto CLEANUP;
 	}
 
 	if(py_set) {
-		if (PyString_Check(py_set)) {
-			set = PyString_AsString(py_set);
+		if (PyStr_Check(py_set)) {
+			set = PyStr_AsString(py_set);
 		} else if (PyUnicode_Check(py_set)) {
 			py_ustr_set = PyUnicode_AsUTF8String(py_set);
-			set = PyString_AsString(py_ustr_set);
+			set = PyStr_AsString(py_ustr_set);
 		} else if ( py_set != Py_None ) {
 			as_error_update(&err, AEROSPIKE_ERR_PARAM, "Set should be string, unicode or None");
 			goto CLEANUP;

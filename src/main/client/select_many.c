@@ -82,11 +82,11 @@ static bool batch_select_cb(const as_batch_read* results, uint32_t n, void* udat
         p_key = PyTuple_New(4);
 
 	    if ( results[i].key->ns && strlen(results[i].key->ns) > 0 ) {
-		    PyTuple_SetItem(p_key, 0, PyString_FromString(results[i].key->ns));
+		    PyTuple_SetItem(p_key, 0, PyStr_FromString(results[i].key->ns));
 	    }
 
 	    if ( results[i].key->set && strlen(results[i].key->set) > 0 ) {
-		    PyTuple_SetItem(p_key, 1, PyString_FromString(results[i].key->set));
+		    PyTuple_SetItem(p_key, 1, PyStr_FromString(results[i].key->set));
 	    }
 
 		if(results[i].key->valuep) {
@@ -96,7 +96,7 @@ static bool batch_select_cb(const as_batch_read* results, uint32_t n, void* udat
 					break;
 
 				case AS_STRING:
-					PyTuple_SetItem(p_key, 2, PyString_FromString((const char *)results[i].key->value.string.value));
+					PyTuple_SetItem(p_key, 2, PyStr_FromString((const char *)results[i].key->value.string.value));
 					break;
 
 				default:
@@ -165,11 +165,11 @@ static void batch_select_recs(AerospikeClient *self, as_error *err, as_batch_rea
         p_key = PyTuple_New(4);
 
         if ( batch->key.ns && strlen(batch->key.ns) > 0 ) {
-            PyTuple_SetItem(p_key, 0, PyString_FromString(batch->key.ns));
+            PyTuple_SetItem(p_key, 0, PyStr_FromString(batch->key.ns));
         }
 
         if ( batch->key.set && strlen(batch->key.set) > 0 ) {
-            PyTuple_SetItem(p_key, 1, PyString_FromString(batch->key.set));
+            PyTuple_SetItem(p_key, 1, PyStr_FromString(batch->key.set));
         }
 
         if(batch->key.valuep) {
@@ -179,7 +179,7 @@ static void batch_select_recs(AerospikeClient *self, as_error *err, as_batch_rea
                     break;
 
                 case AS_STRING:
-                    PyTuple_SetItem(p_key, 2, PyString_FromString((const char *)batch->key.value.string.value));
+                    PyTuple_SetItem(p_key, 2, PyStr_FromString((const char *)batch->key.value.string.value));
                     break;
                 default:
                     break;
@@ -494,11 +494,11 @@ PyObject * AerospikeClient_Select_Many_Invoke(
 			// Store the unicode object into a pool
 			// It is DECREFed at later stages
 			// So, no need of DECREF here.
-			filter_bins[i] = PyString_AsString(
+			filter_bins[i] = PyStr_AsString(
 					store_unicode_bins(&u_objs, PyUnicode_AsUTF8String(py_bin)));
 		}
-		else if (PyString_Check(py_bin)){
-			filter_bins[i]    = PyString_AsString(py_bin);
+		else if (PyStr_Check(py_bin)){
+			filter_bins[i]    = PyStr_AsString(py_bin);
 		}
 		else{
 			as_error_update(&err, AEROSPIKE_ERR_PARAM, "Bin name should be a string or unicode string.");

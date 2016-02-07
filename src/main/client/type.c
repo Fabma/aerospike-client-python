@@ -341,15 +341,15 @@ static int AerospikeClient_Type_Init(AerospikeClient * self, PyObject * args, Py
 	if ( py_lua && PyDict_Check(py_lua) ) {
 
 		PyObject * py_lua_system_path = PyDict_GetItemString(py_lua, "system_path");
-		if ( py_lua_system_path && PyString_Check(py_lua_system_path) ) {
+		if ( py_lua_system_path && PyStr_Check(py_lua_system_path) ) {
 			lua_system_path = TRUE;
-			memcpy(config.lua.system_path, PyString_AsString(py_lua_system_path), AS_CONFIG_PATH_MAX_LEN);
+			memcpy(config.lua.system_path, PyStr_AsString(py_lua_system_path), AS_CONFIG_PATH_MAX_LEN);
 		}
 
 		PyObject * py_lua_user_path = PyDict_GetItemString(py_lua, "user_path");
-		if ( py_lua_user_path && PyString_Check(py_lua_user_path) ) {
+		if ( py_lua_user_path && PyStr_Check(py_lua_user_path) ) {
 			lua_user_path = TRUE;
-			memcpy(config.lua.user_path, PyString_AsString(py_lua_user_path), AS_CONFIG_PATH_MAX_LEN);
+			memcpy(config.lua.user_path, PyStr_AsString(py_lua_user_path), AS_CONFIG_PATH_MAX_LEN);
 		}
 
 	}
@@ -389,11 +389,11 @@ static int AerospikeClient_Type_Init(AerospikeClient * self, PyObject * args, Py
 			if( PyTuple_Check(py_host) && PyTuple_Size(py_host) == 2) {
 
 				py_addr = PyTuple_GetItem(py_host, 0);
-				if (PyString_Check(py_addr)) {
-					addr = strdup(PyString_AsString(py_addr));
+				if (PyStr_Check(py_addr)) {
+					addr = strdup(PyStr_AsString(py_addr));
 				} else if (PyUnicode_Check(py_addr)) {
 					PyObject * py_ustr = PyUnicode_AsUTF8String(py_addr);
-					addr = strdup(PyString_AsString(py_ustr));
+					addr = strdup(PyStr_AsString(py_ustr));
 				}
 				py_port = PyTuple_GetItem(py_host,1);
 				if( PyInt_Check(py_port) || PyLong_Check(py_port) ) {
@@ -403,8 +403,8 @@ static int AerospikeClient_Type_Init(AerospikeClient * self, PyObject * args, Py
 					port = 0;
 				}
 			}
-			else if ( PyString_Check(py_host) ) {
-				addr = strdup( strtok( PyString_AsString(py_host), ":" ) );
+			else if ( PyStr_Check(py_host) ) {
+				addr = strdup( strtok( PyStr_AsString(py_host), ":" ) );
 				addr = strtok(addr, ":");
 				char *temp = strtok(NULL, ":");
 				if(NULL != temp) {
